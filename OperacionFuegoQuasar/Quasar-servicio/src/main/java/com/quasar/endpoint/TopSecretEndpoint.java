@@ -9,35 +9,45 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.quasar.comand.CommandLocation;
+import com.quasar.comand.CommandMessage;
 import com.quasar.comun.QuasarException;
+import com.quasar.comun.ResponseQuasar;
 import com.quasar.dto.SatelliteContainer;
 
 /**
- * Servicio que permite obtener la ubicacion y el mensaje emitido por una nave
+ * Servicio que permite obtener la ubicacion y el mensaje emitido por una nave a
+ * trraves de trilateración
  * 
  * @author jhon hernandez
  *
  */
 @Path("/topsecret")
-//@Stateless
 public class TopSecretEndpoint {
 
 	@Inject
 	private CommandLocation getLocation;
 
+	@Inject
+	private CommandMessage getMessage;
+
 	@POST
 	@Produces("application/json")
 	@Consumes({ "application/json", "application/text" })
 	public Response create(SatelliteContainer satellites) {
+		ResponseQuasar quasar = new ResponseQuasar();
 		try {
-//			JSONObject json = new JSONObject(jsonSatellites);
-//			JSONArray satellites = (JSONArray) json.get("satellites");
 			getLocation.setInput(satellites);
 			getLocation.execute();
+			quasar.setPosition(getLocation.getOut());
+
+			getMessage.setInput(satellites);
+			getMessage.execute();
+			quasar.setMessage(getMessage.getOut());
+
 		} catch (QuasarException e) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-		return Response.ok(getLocation.getOut()).build();
+		return Response.ok(quasar).build();
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.quasar.comun;
 
-import java.util.Map;
+import com.quasar.dto.Position;
 
 /**
  * @author jhon hernandez
@@ -8,14 +8,14 @@ import java.util.Map;
  */
 public class ResponseQuasar {
 
-	private Map<String, Double> position;
+	private Position position;
 	private String message;
 
-	public Map<String, Double> getPosition() {
+	public Position getPosition() {
 		return position;
 	}
 
-	public void setPosition(Map<String, Double> position) {
+	public void setPosition(Position position) {
 		this.position = position;
 	}
 

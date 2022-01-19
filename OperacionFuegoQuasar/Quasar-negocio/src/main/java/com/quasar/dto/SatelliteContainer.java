@@ -10,7 +10,9 @@ import java.util.List;
  *
  */
 public class SatelliteContainer {
-	
+	/**
+	 * Listado de satelites enviados como apoyo para calcular localización
+	 */
 	private List<SatelliteDto> satellites;
 
 	/**

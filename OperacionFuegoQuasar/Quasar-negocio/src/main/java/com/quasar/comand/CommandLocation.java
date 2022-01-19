@@ -1,17 +1,21 @@
 package com.quasar.comand;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
+
+import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
+import com.lemmingapex.trilateration.TrilaterationFunction;
 import com.quasar.comun.Command;
+import com.quasar.comun.EnumError;
 import com.quasar.comun.QuasarException;
-import com.quasar.comun.ResponseQuasar;
 import com.quasar.dto.FilterGet;
 import com.quasar.dto.Position;
 import com.quasar.dto.SatelliteContainer;
-import com.quasar.dto.SatelliteDto;
+import com.quasar.model.Satellite;
 
 /**
  * Comando concreto que permite por medio de la obtencion de tres puntos, y la
@@ -20,60 +24,91 @@ import com.quasar.dto.SatelliteDto;
  * @author jhon hernandez
  *
  */
-public class CommandLocation extends Command<SatelliteContainer, ResponseQuasar> {
+public class CommandLocation extends Command<SatelliteContainer, Position> {
 	@Inject
 	private GetSatellites getsatellites;
 
 	@Override
 	protected void preValidate() throws QuasarException {
-//		if (input.length() < 3) {
-//			throw new QuasarException(EnumError.ERR_101.getNum(), EnumError.ERR_101.getValue());
-//		}
+		if (input.getSatellites().size() < 3) {
+			throw new QuasarException(EnumError.ERR_101.getValue());
+		}
 		isValid = true;
-//		fillList(input);
 	}
 
 	@Override
 	protected void executeCommand() throws QuasarException {
-		FilterGet filter = new FilterGet();
-		getsatellites.setInput(filter);
-		getsatellites.execute();
-
-		getLocation(getDistances(), null);
-
+		result = getLocation(getDistances(), getPositions());
 	}
 
 	@Override
-	public ResponseQuasar getOut() {
+	public Position getOut() {
 		return result;
 	}
 
-	private void getLocation(List<Double> distances, double[][] positions) {
-//		List<Satellite> result = input.stream().map(temp -> {
-//			Satellite obj = new Satellite();
-//			obj.setDistance(temp.getDistance());
-//			obj.setMessage(temp.getMessage());
-//			if ("mkyong".equals(temp.getName())) {
-//				obj.setExtra("this field is for mkyong only!");
-//			}
-//			return obj;
-//		}).collect(Collectors.toList());
+	/**
+	 * Permite obtener la localización [x,y] de un objeto en un plano bidimensional
+	 * por medio de trilateración
+	 * 
+	 * @param distances
+	 * @param positions
+	 * @return ResponseQuasar
+	 */
+	private Position getLocation(double[] distances, double[][] positions) {
+		TrilaterationFunction trilaterationFunction = new TrilaterationFunction(positions, distances);
+		NonLinearLeastSquaresSolver nSolver = new NonLinearLeastSquaresSolver(trilaterationFunction,
+				new LevenbergMarquardtOptimizer());
+		double position[] = nSolver.solve().getPoint().toArray();
+		Position posit = new Position();
+		posit.setX(position[0]);
+		posit.setY(position[1]);
+		return posit;
 	}
 
 	/**
+	 * Obtener listado de distancias de los satelites enviados
 	 * 
-	 * @return
+	 * @return double[]
 	 */
-	private List<Double> getDistances() {
-		List<Double> distances = new ArrayList<>();
-		for (SatelliteDto satellite : input.getSatellites()) {
-			distances.add(satellite.getDistance());
+	private double[] getDistances() {
+		double[] distances = new double[input.getSatellites().size()];
+		for (int i = 0; i < input.getSatellites().size(); i++) {
+			distances[i] = input.getSatellites().get(i).getDistance();
 		}
 		return distances;
 	}
 
-	private List<Position> getPositions() {
-		List<Position> positions = new ArrayList<>();
+	/**
+	 * Se obtiene los datos de los satelites que llegan como parametro de la
+	 * peticion y con ellos su correspondiente posición
+	 * 
+	 * @return List<Position>
+	 * @throws QuasarException
+	 */
+	private double[][] getPositions() throws QuasarException {
+		double[][] positions = new double[input.getSatellites().size()][];
+		try {
+			FilterGet filter = new FilterGet();
+			getsatellites.setInput(filter);
+			getsatellites.execute();
+			List<Satellite> satellites = getsatellites.getOut();
+
+			String[] points;
+			for (int i = 0; i < input.getSatellites().size(); i++) {
+				for (Satellite satelliteBd : satellites) {
+					if (input.getSatellites().get(i).getName().equals(satelliteBd.getName())) {
+						Position position = new Position();
+						position.setX(satelliteBd.getX());
+						position.setY(satelliteBd.getY());
+						points = position.toString().split(",");
+						positions[i] = Arrays.stream(points).map(Double::valueOf).mapToDouble(Double::doubleValue)
+								.toArray();
+					}
+				}
+			}
+		} catch (QuasarException e) {
+			throw new QuasarException("No fue posible obtener las posiciónes de los satelites");
+		}
 		return positions;
 	}
 
