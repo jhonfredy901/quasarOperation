@@ -1,7 +1,11 @@
 package com.quasar.endpoint;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -11,6 +15,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.quasar.comand.CommandLocation;
 import com.quasar.comand.CommandMessage;
+import com.quasar.comun.GenericResponse;
 import com.quasar.comun.QuasarException;
 import com.quasar.comun.ResponseQuasar;
 import com.quasar.dto.SatelliteContainer;
@@ -27,21 +32,39 @@ import com.quasar.dto.SatelliteDto;
 @Path("/topsecret-split")
 public class TopSecretSplitEndpoint {
 
+	/**
+	 * Comando concreto que permite obtener la localizacion de una nave
+	 */
 	@Inject
 	private CommandLocation getLocation;
-
+	/***
+	 * Comando concreto que permite obtener el mensaje enviado
+	 */
 	@Inject
 	private CommandMessage getMessage;
+	/**
+	 * Respuesta particular cuando se obtiene el mensaje y localización
+	 */
+	private ResponseQuasar quasar;
+	/**
+	 * Respuesta generica del servicio
+	 */
+	private GenericResponse generic;
 
-	@POST
+	@GET
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response create(SatelliteContainer satellites) {
-		ResponseQuasar quasar = new ResponseQuasar();
+	@Path("{satellite_name}")
+	public Response getSplit(@PathParam("satellite_name") String satelliteName, SatelliteDto satellite) {
+		quasar = new ResponseQuasar();
+		generic = new GenericResponse();
 		try {
-			executeGetLocationMessage(satellites);
+			satellite.setName(satelliteName);
+			executeGetLocationMessage(satellite);
 		} catch (QuasarException e) {
-			return Response.status(Status.NOT_FOUND).build();
+			generic.setMessage(e.getMessage());
+			generic.setData(Status.NOT_FOUND);
+			return Response.ok(generic).build();
 		}
 		return Response.ok(quasar).build();
 	}
@@ -51,25 +74,39 @@ public class TopSecretSplitEndpoint {
 	@Consumes("application/json")
 	@Path("{satellite_name}")
 	public Response postSplit(@PathParam("satellite_name") String satelliteName, SatelliteDto satellite) {
-		ResponseQuasar quasar = new ResponseQuasar();
+		quasar = new ResponseQuasar();
+		generic = new GenericResponse();
 		try {
 			satellite.setName(satelliteName);
-			SatelliteContainer satellites = new SatelliteContainer();
-			satellites.getSatellites().add(satellite);
-			executeGetLocationMessage(satellites);
+			executeGetLocationMessage(satellite);
 		} catch (QuasarException e) {
-			return Response.status(Status.NOT_FOUND).build();
+			generic.setMessage(e.getMessage());
+			generic.setData(Status.NOT_FOUND);
+			return Response.ok(generic).build();
 		}
 		return Response.ok(quasar).build();
 	}
 
-	private ResponseQuasar executeGetLocationMessage(SatelliteContainer satellites) throws QuasarException {
-		ResponseQuasar quasar = new ResponseQuasar();
-		getLocation.setInput(satellites);
+	/**
+	 * Permite generalizar el consumo de los comandos para obtener ubicación y
+	 * mensaje
+	 * 
+	 * @param satellite
+	 * @return
+	 * @throws QuasarException
+	 */
+	private ResponseQuasar executeGetLocationMessage(SatelliteDto satellite) throws QuasarException {
+		quasar = new ResponseQuasar();
+		SatelliteContainer satelliteContainer = new SatelliteContainer();
+		List<SatelliteDto> satellites = new ArrayList<>();
+		satellites.add(satellite);
+		satelliteContainer.setSatellites(satellites);
+
+		getLocation.setInput(satelliteContainer);
 		getLocation.execute();
 		quasar.setPosition(getLocation.getOut());
 
-		getMessage.setInput(satellites);
+		getMessage.setInput(satelliteContainer);
 		getMessage.execute();
 		quasar.setMessage(getMessage.getOut());
 		return quasar;

@@ -55,12 +55,12 @@ public class CommandMessage extends Command<SatelliteContainer, String> {
 		}
 		listWords.remove("");
 		if (!validateMessagesSize(msgList, listWords.size())) {
-			throw new QuasarException("El tamaño del mensaje es incorrecto, valide por favor");
+			throw new QuasarException(EnumError.ERR_103.getValue());
 		}
 		removeLag(msgList, listWords.size());
 		String message = completeMessage(msgList);
 		if (!validateMessageWords(listWords, message)) {
-			throw new QuasarException("No se puede conocer el mensaje");
+			throw new QuasarException(EnumError.ERR_104.getValue());
 		}
 		return message;
 	}

@@ -2,9 +2,10 @@ package com.quasar.comun;
 
 public enum EnumError {
 
-	ERR_101(101,"Verifíque los parametros de entrada del servicio, e intente de nuevo, se esperan al menos 3 satelites para obtener la ubicación"),
+	ERR_101(101, "Verifíque los parametros de entrada del servicio, e intente de nuevo, se esperan al menos 3 satelites para obtener la ubicación"),
 	ERR_102(102, "El contenido del mensaje enviado no es correcto"),
-	
+	ERR_103(103, "El tamaño del mensaje es incorrecto, valide por favor"),
+	ERR_104(104, "No fue posible entender el mensaje"),
 	;
 	
 	private final int num;
