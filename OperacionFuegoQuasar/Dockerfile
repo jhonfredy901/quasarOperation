@@ -9,7 +9,7 @@ ADD standalone.xml /opt/jboss/wildfly/standalone/configuration/
 
 COPY /postgresql/ /opt/jboss/wildfly/modules/system/layers/base/com/postgresql/
 
-ADD Quasar-servicio.war /opt/jboss/wildfly/standalone/deployments/
+ADD service-quasar.war /opt/jboss/wildfly/standalone/deployments/
 
 WORKDIR /opt/jboss/wildfly/
 

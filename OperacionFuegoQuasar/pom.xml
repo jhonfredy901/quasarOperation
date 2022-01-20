@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.quasar</groupId>
 	<artifactId>OperacionFuegoQuasar</artifactId>
@@ -11,28 +9,9 @@
 		<finalName>OperacionFuegoQuasar</finalName>
 	</build>
 	<modules>
-		<module>Quasar-negocio</module>
-		<module>Quasar-persistencia</module>
-		<module>Quasar-servicio</module>
+		<module>data</module>
+		<module>service</module>
+		<module>business</module>
 	</modules>
-	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.25</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-math3</artifactId>
-			<version>3.6.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.lemmingapex.trilateration</groupId>
-			<artifactId>trilateration</artifactId>
-			<version>1.0.2</version>
-		</dependency>
-
-	</dependencies>
+	
 </project>
