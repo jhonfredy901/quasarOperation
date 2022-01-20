@@ -16,7 +16,7 @@ import com.quasar.dto.SatelliteContainer;
 
 /**
  * Servicio que permite obtener la ubicacion y el mensaje emitido por una nave a
- * trraves de trilateración
+ * traves de trilateración
  * 
  * @author jhon hernandez
  *
@@ -32,7 +32,7 @@ public class TopSecretEndpoint {
 
 	@POST
 	@Produces("application/json")
-	@Consumes({ "application/json", "application/text" })
+	@Consumes("application/json")
 	public Response create(SatelliteContainer satellites) {
 		ResponseQuasar quasar = new ResponseQuasar();
 		try {

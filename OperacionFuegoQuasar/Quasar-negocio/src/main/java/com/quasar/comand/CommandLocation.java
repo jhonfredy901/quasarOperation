@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer.Optimum;
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
 
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
@@ -55,10 +56,10 @@ public class CommandLocation extends Command<SatelliteContainer, Position> {
 	 * @return ResponseQuasar
 	 */
 	private Position getLocation(double[] distances, double[][] positions) {
-		TrilaterationFunction trilaterationFunction = new TrilaterationFunction(positions, distances);
-		NonLinearLeastSquaresSolver nSolver = new NonLinearLeastSquaresSolver(trilaterationFunction,
-				new LevenbergMarquardtOptimizer());
-		double position[] = nSolver.solve().getPoint().toArray();
+		NonLinearLeastSquaresSolver solver = new NonLinearLeastSquaresSolver(
+				new TrilaterationFunction(positions, distances), new LevenbergMarquardtOptimizer());
+		Optimum optimum = solver.solve();
+		double position[] = optimum.getPoint().toArray();
 		Position posit = new Position();
 		posit.setX(position[0]);
 		posit.setY(position[1]);
