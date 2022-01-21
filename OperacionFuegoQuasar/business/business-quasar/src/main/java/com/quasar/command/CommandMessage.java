@@ -48,19 +48,26 @@ public class CommandMessage extends Command<SatelliteContainer, String> {
 		return result;
 	}
 
-	private String getMessage(List<List<String>> msgList) throws QuasarException {
-		List<String> listWords = new ArrayList<>();
-		for (List<String> msg : msgList) {
-			listWords = Stream.concat(listWords.stream(), msg.stream()).distinct().collect(Collectors.toList());
-		}
-		listWords.remove("");
-		if (!validateMessagesSize(msgList, listWords.size())) {
-			throw new QuasarException(EnumError.ERR_103.getValue());
-		}
-		removeLag(msgList, listWords.size());
-		String message = completeMessage(msgList);
-		if (!validateMessageWords(listWords, message)) {
-			throw new QuasarException(EnumError.ERR_104.getValue());
+	public String getMessage(List<List<String>> msgList) throws QuasarException {
+		String message = "";
+		try {
+			List<String> listWords = new ArrayList<>();
+			for (List<String> msg : msgList) {
+				listWords = Stream.concat(listWords.stream(), msg.stream()).distinct().collect(Collectors.toList());
+			}
+			listWords.remove("");
+			if (!validateMessagesSize(msgList, listWords.size())) {
+				throw new QuasarException(EnumError.ERR_103.getValue());
+			}
+			removeLag(msgList, listWords.size());
+			message = completeMessage(msgList);
+			if (!validateMessageWords(listWords, message)) {
+				throw new QuasarException(EnumError.ERR_104.getValue());
+			}
+		} catch (QuasarException e) {
+			throw new QuasarException(e.getMessage());
+		} catch (Exception e) {
+			throw new QuasarException(EnumError.ERR_105.getValue());
 		}
 		return message;
 	}

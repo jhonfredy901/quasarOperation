@@ -12,6 +12,27 @@
 	<packaging>war</packaging>
 	<build>
 		<finalName>service-quasar</finalName>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.sebastian-daschner</groupId>
+					<artifactId>jaxrs-analyzer-maven-plugin</artifactId>
+					<version>0.17</version>
+					<executions>
+						<execution>
+							<phase>process-test-classes</phase>
+							<goals>
+								<goal>analyze-jaxrs</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<backend>swagger</backend>
+						<resourcesDir>service-quasar/apidocs</resourcesDir>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	<dependencies>
 		<dependency>

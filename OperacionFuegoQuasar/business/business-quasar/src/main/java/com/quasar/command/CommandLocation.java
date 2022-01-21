@@ -55,11 +55,11 @@ public class CommandLocation extends Command<SatelliteContainer, Position> {
 	 * @param positions
 	 * @return ResponseQuasar
 	 */
-	private Position getLocation(double[] distances, double[][] positions) {
+	public Position getLocation(double[] distances, double[][] positions) {
 		NonLinearLeastSquaresSolver solver = new NonLinearLeastSquaresSolver(
 				new TrilaterationFunction(positions, distances), new LevenbergMarquardtOptimizer());
 		Optimum optimum = solver.solve();
-		double position[] = optimum.getPoint().toArray();
+		double[] position = optimum.getPoint().toArray();
 		Position posit = new Position();
 		posit.setX(position[0]);
 		posit.setY(position[1]);

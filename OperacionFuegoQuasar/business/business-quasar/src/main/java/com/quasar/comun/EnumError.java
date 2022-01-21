@@ -6,7 +6,9 @@ public enum EnumError {
 			"Verifíque los parámetros de entrada del servicio, e intente de nuevo, se esperan al menos 3 satelites para obtener la ubicación"),
 	ERR_102(102, "El contenido del mensaje enviado no es correcto!"),
 	ERR_103(103, "El tamaño del mensaje es incorrecto, valide por favor!"),
-	ERR_104(104, "No fue posible entender el mensaje!"),;
+	ERR_104(104, "No fue posible entender el mensaje!"),
+	ERR_105(105, "No fue posible obtener el mensaje"),;
+	;
 
 	private final int num;
 	private final String value;

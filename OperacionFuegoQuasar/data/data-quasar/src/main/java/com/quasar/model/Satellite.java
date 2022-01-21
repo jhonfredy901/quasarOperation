@@ -43,31 +43,6 @@ public class Satellite implements Serializable {
 		this.id = id;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (!(obj instanceof Satellite)) {
-			return false;
-		}
-		Satellite other = (Satellite) obj;
-		if (id != null) {
-			if (!id.equals(other.id)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -108,15 +83,4 @@ public class Satellite implements Serializable {
 		this.message = message;
 	}
 
-	@Override
-	public String toString() {
-		String result = getClass().getSimpleName() + " ";
-		if (id != null)
-			result += "id: " + id;
-		if (name != null && !name.trim().isEmpty())
-			result += ", name: " + name;
-		result += ", x: " + x;
-		result += ", y: " + y;
-		return result;
-	}
 }
