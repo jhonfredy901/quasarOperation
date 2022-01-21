@@ -7,9 +7,10 @@
 		<description>Quasar Persistence Unit</description>
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:jboss/datasources/quasar</jta-data-source>
+		<class>com.quasar.model.Satellite</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
-			<!-- <property name="hibernate.hbm2ddl.auto" value="create" /> -->
+			<property name="hibernate.hbm2ddl.auto" value="none" />
 			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.format_sql" value="true" />
 			<property
