@@ -6,9 +6,9 @@ La arquitectura planteada para dar solución a la problematica es una arquitectu
 ## 1.2. Vista de arquitectura por capas
 En la visualización por medio de capas se encuentra una definicion que permite entender la estructura general del proyecto, entendiendo que esta fue creada apartir de maven con una estructura de pom, la cual permite gestionar las dependencias de cada uno de los modulos reuqeridos para dar funcionalidad al servicio.
 
-![](https://raw.githubusercontent.com/jhonfredy901/quasarOperation/master/OperacionFuegoQuasar/apidocs/capas.png?token=GHSAT0AAAAAABQW3THBP6NWHALIWSZGFQ3QYPLLUSQ)
+![](OperacionFuegoQuasar/apidocs/capas.png?raw=true)
 
-Siguiendo los principios SOLID de programacion orientada objectos y buenas practicas de arquitecturas limpias: 
+Siguiendo los principios SOLID de programacion orientada objectos y buenas practicas de arquitecturas limpias, para el desarrollo de la solución se utiliza java y contenedores docker. 
 * Separacion por capas (data,business,service).
 * Separar responsabilidades tanto para obtener el mensaje como la localización.
 * Usar caracteristicas de herencia para manejar a traves de patrones de diseño (Patron Comando) para estructurar la forma de ejecutar una operación.
@@ -19,7 +19,7 @@ Siguiendo los principios SOLID de programacion orientada objectos y buenas pract
 ## 1.3. Vista de despliegue
 El despliegue del microservicio se realiza en Google Cloud Plataform usando contenedores Docker para gestionar cada componente, tanto base de datos como backend.
 
- ![](https://raw.githubusercontent.com/jhonfredy901/quasarOperation/master/OperacionFuegoQuasar/apidocs/vistaDespliegue.png?token=GHSAT0AAAAAABQW3THBCG7N2DEZNBKUPMGKYPLLV5A)
+![](OperacionFuegoQuasar/apidocs/vistaDespliegue.png?raw=true)
 
 ### 1.3.1. Enpoints
 Se relaciona la dirección de la documentación por medio de la especificacion swagger de todos los enpoints disponibles para el manejo de a soulción.
