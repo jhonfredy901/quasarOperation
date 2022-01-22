@@ -12,7 +12,6 @@ Siguiendo los principios SOLID de programacion orientada objectos y buenas pract
 * Separacion por capas (data,business,service).
 * Separar responsabilidades tanto para obtener el mensaje como la localización.
 * Usar caracteristicas de herencia para manejar a traves de patrones de diseño (Patron Comando) para estructurar la forma de ejecutar una operación.
-<patron comando imagen>
 * Inversion de dependencias al impedir que un componente de una capa inferior acceda a una capa superior.
 * Manejando excepciones para los componentes reuqeridos.
 
