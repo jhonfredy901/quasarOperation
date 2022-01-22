@@ -24,7 +24,7 @@ El despliegue del microservicio se realiza en Google Cloud Plataform usando cont
 
 ### 1.3.1. Enpoints
 Se relaciona la dirección de la documentación por medio de la especificacion swagger de todos los enpoints disponibles para el manejo de a soulción.
-http://34.125.24.35:8082/apidocs/#/
+http://34.125.24.35:8080/apidocs/#/
 
 
 ## 2. Instalación de microservicio
