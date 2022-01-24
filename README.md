@@ -11,7 +11,7 @@ En la visualización por medio de capas se encuentra una definicion que permite 
 Siguiendo los principios SOLID de programacion orientada objectos y buenas practicas de arquitecturas limpias, para el desarrollo de la solución se utiliza java y contenedores docker. 
 * Separacion por capas (data,business,service).
 * Separar responsabilidades tanto para obtener el mensaje como la localización.
-* Usar caracteristicas de herencia para manejar a traves de patrones de diseño (Patron Comando) para estructurar la forma de ejecutar una operación.
+* Usar caracteristicas de herencia para manejar a traves de patrones de diseño [Patron Comando](https://es.wikipedia.org/wiki/Command_(patr%C3%B3n_de_dise%C3%B1o)) para estructurar la forma de ejecutar una operación.
 * Inversion de dependencias al impedir que un componente de una capa inferior acceda a una capa superior.
 * Manejando excepciones para los componentes reuqeridos.
 
